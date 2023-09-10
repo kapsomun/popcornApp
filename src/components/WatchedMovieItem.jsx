@@ -1,10 +1,21 @@
 /* eslint-disable react/prop-types */
 
-export default function WatchedMovieItem(movie) {
+export default function WatchedMovieItem({
+  movie,
+  onRemoveWatchedMovie,
+  onSelectMovie,
+  onCloseMovie,
+}) {
+  function deleteMovie(e) {
+    e.stopPropagation()
+    onCloseMovie();
+    onRemoveWatchedMovie(movie.imdbID);
+  }
+
   return (
-    <li key={movie.imdbID}>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
+    <li onClick={() => onSelectMovie(movie.imdbID)} key={movie.imdbID}>
+      <img src={movie.poster} alt={`${movie.title} poster`} />
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
@@ -16,8 +27,9 @@ export default function WatchedMovieItem(movie) {
         </p>
         <p>
           <span>⏳</span>
-          <span>{movie.runtime} min</span>
+          <span>{movie.runtime}</span>
         </p>
+        <button className="btn-delete" onClick={deleteMovie}>❌</button>
       </div>
     </li>
   );
